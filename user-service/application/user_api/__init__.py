@@ -1,6 +1,5 @@
 # application/user_api/__init__.py
+from . import routes
 from flask import Blueprint
 
-user_api_blueprint = Blueprint('user_api', __name__)
-
-from . import routes
+orcamento_api_blueprint = Blueprint('orcamento_api', __name__)
