@@ -1,0 +1,76 @@
+# docker-compose.deploy.yml
+version: '3.8'
+
+volumes:
+  gastodb_vol:
+  orcamentodb_vol:
+
+networks:
+  micro_network:
+    external:
+      name: micro_network
+
+services:
+  gasto-api:
+    container_name: cgasto-service
+    build:
+      context: .
+    ports:
+    - "5002:5002"
+    depends_on:
+      - gasto-db
+    networks:
+      - micro_network
+    restart: always
+
+  gasto-db:
+    container_name: cgasto_dbase
+    image: mysql:8
+    ports:
+    - "32001:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: porquinchurrasco
+      MYSQL_DATABASE: gasto
+      MYSQL_USER: porquin
+      MYSQL_PASSWORD: churrasco
+    networks:
+      - micro_network
+    volumes:
+    - gastodb_vol:/var/lib/mysql
+    
+  orcamento-api:
+    container_name: corcamento-service
+    build:
+      context: .
+    ports:
+      - "5001:5001"
+    depends_on:
+      - orcamento-db
+    networks:
+      - micro_network
+    restart: always
+
+  orcamento-db:
+    container_name: corcamento_dbase
+    image: mysql:8
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: pfm_dc_2020
+      MYSQL_DATABASE: orcamento
+      MYSQL_USER: cloudacademy
+      MYSQL_PASSWORD: pfm_2020
+    networks:
+      - micro_network
+    volumes:
+      - orcamentodb_vol:/var/lib/mysql
+
+  frontend-app:
+    container_name: cfrontend-app
+    build:
+      context: .
+    ports:
+    - "5000:5000"
+    networks:
+      - micro_network
+    restart: always
