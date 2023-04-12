@@ -67,7 +67,7 @@ def cadastrarGasto():
 @gasto_api_blueprint.route('/api/gasto/sincronizar', methods=['POST'])
 def sincronizarGastos():
     usuario_cpf = request.form['usuario_cpf']
-    data_comeco = request.form['data_comeco']
+    data_inicio = request.form['data_inicio']
     data_fim = request.form['data_fim']
 
     url = 'https://6434029c582420e231716b14.mockapi.io/api/gastos'
