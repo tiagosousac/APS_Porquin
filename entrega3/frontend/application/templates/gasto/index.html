@@ -1,0 +1,45 @@
+{% extends "base_col_1.html" %}
+{% block title %}Home Page{% endblock %}
+
+{% block pageContent %}
+
+{% if gastos | length > 0 %}
+{% for gasto in gastos %}
+
+<div class="col-md-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">{{ gasto.nome }}</h2>
+        </div>
+        <div class="panel-footer">
+            <div class="container">
+                <div class="label label-info">Valor: {{ gasto.valor }} $</div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="container">
+                <div class="label label-info">Data: {{ gasto.data_ocorrida }}</div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="container">
+
+                <div class="label label-info">Orçamento: {% for orcamento in orcamentos %}{% if gasto.orcamento_id ==
+                    orcamento.id %}{{orcamento.nome}}{% endif %}{% endfor %}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% else %}
+<strong>Nenhum gasto encontrado.</strong>
+{% endif %}
+<form action="/criar-gasto">
+    <input type="submit" value="Criar gasto" />
+</form>
+<form action="/sincronizar-gastos">
+    <input type="submit" value="Sincronizar gastos" />
+</form>
+
+{% endblock %}

@@ -6,6 +6,7 @@ from flask import jsonify, request
 import requests
 from dateutil import parser
 
+
 @gasto_api_blueprint.route('/api/gastos', methods=['GET'])
 def listarGastos():
     gastos = []
@@ -15,12 +16,13 @@ def listarGastos():
     response = jsonify({'results': gastos})
     return response
 
+
 @gasto_api_blueprint.route('/api/gastos/filter', methods=['GET'])
 def filtrarGastos():
-    orcamento_id  = request.args.get('orcamento_id', None)
-    categoria_id  = request.args.get('categoria_id', None)
-    data_inicio  = request.args.get('data_inicio', None)
-    data_fim  = request.args.get('data_fim', None)
+    orcamento_id = request.args.get('orcamento_id', None)
+    categoria_id = request.args.get('categoria_id', None)
+    data_inicio = request.args.get('data_inicio', None)
+    data_fim = request.args.get('data_fim', None)
 
     gastos = []
     gasto_query = Gasto.query
@@ -43,11 +45,13 @@ def filtrarGastos():
     response = jsonify({'results': gastos})
     return response
 
+
 @gasto_api_blueprint.route('/api/gasto/create', methods=['POST'])
 def cadastrarGasto():
     gasto = Gasto()
     gasto.orcamento_id = request.form['orcamento_id']
-    gasto.categoria_id = request.form['categoria_id']
+    # gasto.categoria_id = request.form['categoria_id']
+    gasto.categoria_id = 1
     gasto.nome = request.form['nome']
     gasto.valor = request.form['valor']
     gasto.descricao = request.form['descricao']
@@ -56,16 +60,15 @@ def cadastrarGasto():
     db.session.add(gasto)
     db.session.commit()
 
-    response = jsonify({'message': 'Gasto added', 'gasto': item.to_json()})
+    response = jsonify({'message': 'Gasto added', 'gasto': gasto.to_json()})
     return response
+
 
 @gasto_api_blueprint.route('/api/gasto/sincronizar', methods=['POST'])
 def sincronizarGastos():
-    json = request.get_json()
-
-    usuario_cpf = json['usuario_cpf']
-    data_comeco = json['data_comeco']
-    data_fim = json['data_fim']
+    usuario_cpf = request.form['usuario_cpf']
+    data_comeco = request.form['data_comeco']
+    data_fim = request.form['data_fim']
 
     url = 'https://6434029c582420e231716b14.mockapi.io/api/gastos'
     response = requests.get(url)
@@ -78,8 +81,8 @@ def sincronizarGastos():
     gastos = response.json()
     for gasto in gastos:
         novo_gasto = Gasto()
-        novo_gasto.orcamento_id = gasto['orcamento_id']
-        novo_gasto.categoria_id = gasto['categoria_id']
+        novo_gasto.orcamento_id = 1
+        novo_gasto.categoria_id = 1
         novo_gasto.nome = gasto['nome']
         novo_gasto.valor = gasto['valor']
         novo_gasto.descricao = gasto['descricao']
@@ -93,6 +96,7 @@ def sincronizarGastos():
     response = jsonify({'message': 'Gastos sincronizados'})
     return response
 
+
 @gasto_api_blueprint.route('/api/gasto/<int:id>', methods=['DELETE'])
 def removerGasto(id):
     gasto = Gasto.query.get(id)
@@ -104,6 +108,7 @@ def removerGasto(id):
     db.session.commit()
 
     return jsonify({'result': True})
+
 
 @gasto_api_blueprint.route('/api/gasto/<int:id>', methods=['PUT'])
 def editarGasto(id):
