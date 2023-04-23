@@ -8,7 +8,7 @@ class IServicoGasto:
         pass
 
     @staticmethod
-    def cadastrarGasto(Gasto):
+    def cadastrarGasto(gasto):
         pass
 
     @staticmethod
@@ -20,5 +20,5 @@ class IServicoGasto:
         pass
 
     @staticmethod
-    def editarGasto(Gasto):
+    def editarGasto(gasto_id, orcamento_id, categoria_id, nome, valor, descricao, data_ocorrida):
         pass
