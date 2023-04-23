@@ -2,8 +2,10 @@
 import requests
 from flask import request
 
+from ..interfaces.IControleOrcamento import IControleOrcamento
 
-class OrcamentoClient:
+
+class ControleOrcamento(IControleOrcamento):
     @staticmethod
     def listar_orcamentos():
         r = requests.get('http://corcamento-service:5001/api/orcamentos')

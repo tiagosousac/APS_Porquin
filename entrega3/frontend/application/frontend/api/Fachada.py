@@ -1,27 +1,29 @@
 import requests
 from flask import request
 
-from .GastoClient import GastoClient
-from .OrcamentoClient import OrcamentoClient
+from ..interfaces.IFachada import IFachada
+
+from .ControleGasto import ControleGasto
+from .ControleOrcamento import ControleOrcamento
 
 
-class Fachada:
+class Fachada(IFachada):
     @staticmethod
     def get_gastos():
-        return GastoClient.listar_gastos()
+        return ControleGasto.listar_gastos()
 
     @staticmethod
     def post_gasto(gasto):
-        return GastoClient.cadastrar_gasto(gasto)
+        return ControleGasto.cadastrar_gasto(gasto)
 
     @staticmethod
     def sync_gastos(info):
-        return GastoClient.sincronizar_gastos(info)
+        return ControleGasto.sincronizar_gastos(info)
 
     @staticmethod
     def create_orcamento(form):
-        return OrcamentoClient.criar_orcamento(form)
+        return ControleOrcamento.criar_orcamento(form)
 
     @staticmethod
     def get_orcamentos():
-        return OrcamentoClient.listar_orcamentos()
+        return ControleOrcamento.listar_orcamentos()

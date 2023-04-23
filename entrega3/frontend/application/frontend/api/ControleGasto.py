@@ -2,8 +2,10 @@
 import requests
 from flask import request
 
+from ..interfaces.IControleGasto import IControleGasto
 
-class GastoClient:
+
+class ControleGasto(IControleGasto):
     @staticmethod
     def listar_gastos():
         r = requests.get('http://cgasto-service:5002/api/gastos')
